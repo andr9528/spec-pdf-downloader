@@ -7,11 +7,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using Moq.Protected;
+using pdf_downloader.Domain.Exceptions;
 using PdfDownloader.Infrastructure;
 using PdfDownloader.Infrastructure.Services.Interfaces;
 using Xunit;
 
-namespace PdfDownloader.Test
+namespace pdf_downloader.Test
 {
     public class PdfsDownloaderTests
     {
@@ -40,37 +41,28 @@ namespace PdfDownloader.Test
         }
 
         [Fact]
-        public async Task DownloadAsync_ReturnsFalse_WhenUrlIsEmpty()
+        public async Task DownloadAsync_Throws_WhenUrlIsEmpty()
         {
             var downloader = new PdfsDownloader();
-
-            var result = await downloader.DownloadAsync("", "file.pdf");
-
-            Assert.False(result.success);
-            Assert.Contains("Url is Empty", result.error);
+            
+            await Assert.ThrowsAsync<DownloadFailedException>(() => downloader.DownloadAsync("", "file.pdf"));
         }
 
         [Fact]
-        public async Task DownloadAsync_ReturnsFalse_WhenUrlIsInvalid()
+        public async Task DownloadAsync_Throws_WhenUrlIsInvalid()
         {
             var downloader = new PdfsDownloader();
 
-            var result = await downloader.DownloadAsync("invalid-url", "file.pdf");
-
-            Assert.False(result.success);
-            Assert.Equal("Url is not a valid url", result.error);
+            await Assert.ThrowsAsync<DownloadFailedException>(() => downloader.DownloadAsync("invalid-url", "file.pdf"));
         }
 
         [Fact]
-        public async Task DownloadAsync_ReturnsFalse_WhenPdfHeaderInvalid()
+        public async Task DownloadAsync_Throws_WhenPdfHeaderInvalid()
         {
             var invalidPdfBytes = new byte[] { 0x00, 0x00 }; // Not %PDF
             var downloader = CreateDownloaderWithMockedHttp(invalidPdfBytes);
 
-            var result = await downloader.DownloadAsync("http://fake.com/file.pdf", Path.GetTempFileName());
-
-            Assert.False(result.success);
-            Assert.Equal("Invalid PDF header", result.error);
+            await Assert.ThrowsAsync<DownloadFailedException>(() => downloader.DownloadAsync("http://fake.com/file.pdf", Path.GetTempFileName()));
         }
 
         [Fact]
@@ -82,7 +74,7 @@ namespace PdfDownloader.Test
 
             var result = await downloader.DownloadAsync("http://fake.com/file.pdf", tempFile);
 
-            Assert.True(result.success);
+            Assert.True(result);
             Assert.True(File.Exists(tempFile));
 
             File.Delete(tempFile);
@@ -133,7 +125,7 @@ namespace PdfDownloader.Test
             Assert.Single(result);
             Assert.False(result[0].IsDownloaded);
             Assert.NotNull(result[0].ErrorMessage);
-            Assert.Contains("First Attempts", result[0].ErrorMessage);
+            Assert.Contains("First Attempt", result[0].ErrorMessage);
             Assert.Contains("Second Attempt", result[0].ErrorMessage);
 
             Directory.Delete(tempDir);

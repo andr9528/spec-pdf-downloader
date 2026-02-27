@@ -187,13 +187,11 @@
         if (contentDisposition == null)
             return null;
 
-        // Prefer filename* (RFC 5987)
         if (!string.IsNullOrEmpty(contentDisposition.FileNameStar))
         {
             return Uri.UnescapeDataString(contentDisposition.FileNameStar);
         }
 
-        // Fallback to filename
         if (!string.IsNullOrEmpty(contentDisposition.FileName))
         {
             return contentDisposition.FileName.Trim('"');
