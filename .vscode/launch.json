@@ -1,0 +1,38 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch API",
+      "type": "coreclr",
+      "request": "launch",
+      "launchBrowser": {
+        "enabled": false
+      },
+      "preLaunchTask": "build-api",
+      "program": "${workspaceFolder}/pdf-downloader.Api/bin/Debug/net10.0/pdf-downloader.Api.dll",
+      "cwd": "${workspaceFolder}/pdf-downloader.Api",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Launch App",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-app",
+      "launchBrowser": {
+        "enabled": false
+      },
+      "program": "dotnet",
+      "args": ["watch", "run", "--project", "${workspaceFolder}/pdf-downloader.App"],
+      "cwd": "${workspaceFolder}/pdf-downloader.App",
+      "stopAtEntry": false,
+      "console": "integratedTerminal"
+    }
+  ],
+    "compounds": [
+    {
+      "name": "Launch API + App",
+      "configurations": ["Launch API", "Launch App"],
+      "stopAll": true
+    }
+  ]
+}

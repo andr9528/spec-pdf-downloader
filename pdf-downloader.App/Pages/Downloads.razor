@@ -1,0 +1,9 @@
+@page "/downloads"
+@using System.Net.Http.Headers
+@using System.Text.Json
+@using Microsoft.AspNetCore.Authorization
+@using pdf_downloader.App.Shared
+
+@attribute [Authorize]
+
+<DownloadList></DownloadList>

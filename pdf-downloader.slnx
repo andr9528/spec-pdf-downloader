@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="pdf-downloader.Api/pdf-downloader.Api.csproj" />
+  <Project Path="pdf-downloader.App/pdf-downloader.App.csproj" />
+  <Project Path="pdf-downloader.Application/pdf-downloader.Application.csproj" />
+  <Project Path="pdf-downloader.Domain/pdf-downloader.Domain.csproj" />
+  <Project Path="pdf-downloader.Infrastructure/pdf-downloader.Infrastructure.csproj" />
+  <Project Path="pdf-downloader.Test/pdf-downloader.Test.csproj" />
+</Solution>

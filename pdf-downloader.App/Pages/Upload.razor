@@ -1,0 +1,70 @@
+@page "/file-upload"
+@using System.Net.Http.Headers
+@using System.Text.Json
+@using Microsoft.AspNetCore.Authorization
+@using pdf_downloader.App.Shared
+@inject HttpClient Http
+@attribute [Authorize(Roles = "ADMIN")]
+
+<Loading IsVisible="@_isLoading" />
+
+<h3>Upload Excel File</h3>
+
+<InputFile OnChange="HandleFileSelected" accept=".xlsx,.xls" />
+<br />
+<button class="btn btn-primary mt-2" @onclick="UploadFile" disabled="@(_selectedFile == null)">
+    Upload
+</button>
+
+@if (!string.IsNullOrWhiteSpace(_uploadMessage))
+{
+    <div class="alert alert-info mt-2">@_uploadMessage</div>
+}
+
+<hr />
+
+<DownloadList @ref="_downloadList" />
+
+@code {
+    private bool _isLoading = false;
+
+    private DownloadList? _downloadList;
+
+    private IBrowserFile? _selectedFile;
+    private string? _uploadMessage;
+
+    private void HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        _selectedFile = e.File;
+    }
+
+    private async Task UploadFile()
+    {
+        if (_selectedFile == null)
+            return;
+
+        _isLoading = true;
+        StateHasChanged();
+
+        using var content = new MultipartFormDataContent();
+
+        var fileContent = new StreamContent(_selectedFile.OpenReadStream(maxAllowedSize: 1024 * 1024 * 50));
+        fileContent.Headers.ContentType = new MediaTypeHeaderValue(_selectedFile.ContentType);
+
+        content.Add(fileContent, "file", _selectedFile.Name);
+
+        var response = await Http.PostAsync("file/upload", content);
+
+        _uploadMessage = response.IsSuccessStatusCode
+            ? "Upload successful!"
+            : $"Upload failed: {response.StatusCode}";
+
+        if (response.IsSuccessStatusCode)
+        {
+            await _downloadList?.LoadData();
+        }
+
+        _isLoading = false;
+        StateHasChanged();
+    }
+}

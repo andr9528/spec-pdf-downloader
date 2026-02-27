@@ -1,0 +1,15 @@
+﻿@page "/"
+@using System.Net
+@using Microsoft.AspNetCore.Authorization
+@using PdfDownloader.Domain.Entities
+@attribute [Authorize]
+
+@inject HttpClient Http
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+@code{
+
+}

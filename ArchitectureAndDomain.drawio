@@ -1,0 +1,148 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0" version="29.5.2">
+  <diagram name="Side-1" id="itHEufsgMRRrxkH582uQ">
+    <mxGraphModel dx="2058" dy="1106" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ETa8ZJD6mjFbC9xYWE1Z-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="170" width="360" x="380" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="ETa8ZJD6mjFbC9xYWE1Z-1" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" value="Database" vertex="1">
+          <mxGeometry height="80" width="60" x="630" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="ETa8ZJD6mjFbC9xYWE1Z-7" edge="1" parent="1" source="ETa8ZJD6mjFbC9xYWE1Z-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" target="ETa8ZJD6mjFbC9xYWE1Z-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ETa8ZJD6mjFbC9xYWE1Z-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Api" vertex="1">
+          <mxGeometry height="60" width="120" x="440" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="ETa8ZJD6mjFbC9xYWE1Z-6" edge="1" parent="1" source="ETa8ZJD6mjFbC9xYWE1Z-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" target="ETa8ZJD6mjFbC9xYWE1Z-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ETa8ZJD6mjFbC9xYWE1Z-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Client" vertex="1">
+          <mxGeometry height="60" width="120" x="190" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-14" edge="1" parent="1" source="M9o4W4zWbEUL0jSgPq_v-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="M9o4W4zWbEUL0jSgPq_v-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-1" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Upload Download Data" vertex="1">
+          <mxGeometry height="80" width="120" x="270" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-9" edge="1" parent="1" source="M9o4W4zWbEUL0jSgPq_v-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="M9o4W4zWbEUL0jSgPq_v-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="200" y="640" />
+              <mxPoint x="200" y="570" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-10" edge="1" parent="1" source="M9o4W4zWbEUL0jSgPq_v-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="M9o4W4zWbEUL0jSgPq_v-5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="200" y="640" />
+              <mxPoint x="200" y="730" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-2" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Admin" vertex="1">
+          <mxGeometry height="60" width="30" x="90" y="610" as="geometry" />
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-18" edge="1" parent="1" source="M9o4W4zWbEUL0jSgPq_v-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="M9o4W4zWbEUL0jSgPq_v-13">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="790" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-5" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Download PDFs" vertex="1">
+          <mxGeometry height="80" width="120" x="270" y="690" as="geometry" />
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-6" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Fetch Downloaded PDF(s)" vertex="1">
+          <mxGeometry height="80" width="120" x="270" y="840" as="geometry" />
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-11" edge="1" parent="1" source="M9o4W4zWbEUL0jSgPq_v-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="M9o4W4zWbEUL0jSgPq_v-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-8" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="User" vertex="1">
+          <mxGeometry height="60" width="30" x="90" y="850" as="geometry" />
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-12" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" value="SQL-Database" vertex="1">
+          <mxGeometry height="80" width="60" x="570" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-19" edge="1" parent="1" source="M9o4W4zWbEUL0jSgPq_v-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="M9o4W4zWbEUL0jSgPq_v-6">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="880" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-13" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" value="Fileserver" vertex="1">
+          <mxGeometry height="80" width="60" x="570" y="750" as="geometry" />
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-17" edge="1" parent="1" source="M9o4W4zWbEUL0jSgPq_v-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="M9o4W4zWbEUL0jSgPq_v-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-15" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="External" vertex="1">
+          <mxGeometry height="60" width="120" x="540" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-20" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value=":FileController" vertex="1">
+          <mxGeometry height="460" width="100" x="100" y="1070" as="geometry" />
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-21" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value=":PdfDownloadRepo" vertex="1">
+          <mxGeometry height="160" width="100" x="270" y="1370" as="geometry" />
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-22" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value=":ExcelReader" vertex="1">
+          <mxGeometry height="280" width="100" x="270" y="1070" as="geometry" />
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-23" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" value=":PdfDownload" vertex="1">
+          <mxGeometry height="300" width="100" x="430" y="1070" as="geometry" />
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-24" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" target="M9o4W4zWbEUL0jSgPq_v-20" value="UploadExcel">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="20" y="1150" as="sourcePoint" />
+            <mxPoint x="100" y="1150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-25" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" value="ReadExcel">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="149.5" y="1190" as="sourcePoint" />
+            <mxPoint x="319.5" y="1190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-26" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" value="return list of pdfdownload">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="319.5" y="1310" as="sourcePoint" />
+            <mxPoint x="149.5" y="1310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-27" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" value="CreatePdfDownload(s)">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="319.5" y="1240" as="sourcePoint" />
+            <mxPoint x="479.5" y="1240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-29" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;curved=0;rounded=0;" value="return">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="479.5" y="1280" as="sourcePoint" />
+            <mxPoint x="319.5" y="1280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-30" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" value="SavePdfDownload">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="149.5" y="1450" as="sourcePoint" />
+            <mxPoint x="319.5" y="1450" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-31" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" value="Database" vertex="1">
+          <mxGeometry height="80" width="60" x="440" y="1450" as="geometry" />
+        </mxCell>
+        <mxCell id="M9o4W4zWbEUL0jSgPq_v-33" edge="1" parent="1" source="M9o4W4zWbEUL0jSgPq_v-21" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" target="M9o4W4zWbEUL0jSgPq_v-31" value="Save">
+          <mxGeometry relative="1" width="80" as="geometry">
+            <mxPoint x="420" y="1590" as="sourcePoint" />
+            <mxPoint x="530" y="1560" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

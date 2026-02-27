@@ -1,0 +1,368 @@
+@using System.Net.Http.Headers
+@using System.Text.Json
+@using Microsoft.AspNetCore.Components.Authorization
+@inject HttpClient Http
+@inject IJSRuntime JS
+
+<Loading IsVisible="@_isLoading" />
+<h3>Downloaded PDF List</h3>
+
+<div class="mb-2 d-flex gap-2">
+    <input type="text"
+           class="form-control"
+           placeholder="Search..."
+           @bind="SearchTerm"
+           @bind:event="oninput" />
+
+    <button class="btn btn-outline-secondary" @onclick="ToggleHideDownloaded">
+        @switch(_showDownloaded)
+        {
+            case ShowDownloaded.DOWNLOADED:
+            <p>Hide Downloaded</p>
+            break;
+            case ShowDownloaded.NOTDOWNLOADED:
+            <p>Show Both</p>
+            break;
+            case ShowDownloaded.BOTH:
+            <p>Show Downloaded</p>
+            break;
+            default:
+            <p>Click me!</p>
+            break;
+        }
+    </button>
+    <AuthorizeView Roles="ADMIN">
+        <button class="btn btn-success" @onclick="StartDownloadAsync" disabled="@( !_selectedItems.Any() )">
+            Start Download
+        </button>
+    </AuthorizeView>
+</div>
+
+@if (_pagedItems is not null && !_isLoading)
+{
+    <p>Total Results: @_filteredCount</p>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    <input type="checkbox" @onclick="SelectAllPagedItems" />
+                </th>
+                <th @onclick="() => SortBy(nameof(PdfDownloadResponse.BRnum))" style="cursor:pointer">
+                    BRnum @SortIndicator(nameof(PdfDownloadResponse.BRnum))
+                </th>
+                <th @onclick="() => SortBy(nameof(PdfDownloadResponse.Title))" style="cursor:pointer">
+                    Title @SortIndicator(nameof(PdfDownloadResponse.Title))
+                </th>
+                <th @onclick="() => SortBy(nameof(PdfDownloadResponse.IsDownloaded))" style="cursor:pointer">
+                    Is Downloaded @SortIndicator(nameof(PdfDownloadResponse.IsDownloaded))
+                </th>
+                <th @onclick="() => SortBy(nameof(PdfDownloadResponse.ErrorMessage))" style="cursor:pointer">
+                    Error at Download @SortIndicator(nameof(PdfDownloadResponse.ErrorMessage))
+                </th>
+                <th>
+                    Retrieve PDF
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in _pagedItems)
+            {
+                <tr class="@GetRowClass(item)">
+                    <td>
+                        <input type="checkbox"
+                            @bind="item.IsSelected"
+                            @bind:event="onchange"
+                            @bind:after="() => UpdateSelectedItems(item)" />
+                    </td>
+                    <td>@item.BRnum</td>
+                    <td>@item.Title</td>
+                    <td>@item.IsDownloaded</td>
+                    <td>@item.ErrorMessage</td>
+                    <td>
+                        <button @onclick="() => RetrievePdf(item.Id)">Retrieve</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between">
+        <button class="btn btn-secondary"
+                @onclick="PreviousPage"
+                disabled="@(_currentPage == 1)">
+            Previous
+        </button>
+
+        <span>Page @_currentPage of @_totalPages</span>
+
+        <button class="btn btn-secondary"
+                @onclick="NextPage"
+                disabled="@(_currentPage == _totalPages)">
+            Next
+        </button>
+    </div>
+}
+
+@code {
+    private bool _isLoading = false;
+    private ShowDownloaded _showDownloaded = ShowDownloaded.BOTH;
+
+    private List<PdfDownloadResponse> _allItems = new();
+    private List<PdfDownloadResponse> _pagedItems = new();
+    private HashSet<Guid> _selectedItems = new();
+
+    private string _searchTerm = string.Empty;
+
+    private int _currentPage = 1;
+    private int _pageSize = 20;
+    private int _totalPages = 1;
+    private int _filteredCount = 0;
+
+    private string _sortColumn = nameof(PdfDownloadResponse.BRnum);
+    private bool _sortAscending = true;
+
+    private bool _masterSelect = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    public async Task LoadData()
+    {
+        _isLoading = true;
+        StateHasChanged();
+
+        var result = await Http.GetFromJsonAsync<List<PdfDownloadResponse>>("file/downloads");
+
+        if (result is not null)
+        {
+            _allItems = result;
+            ApplyFilteringSortingAndPaging();
+        }
+
+        _isLoading = false;
+        StateHasChanged();
+    }
+
+    public async Task RetrievePdf(Guid id)
+    {
+        _isLoading = true;
+        StateHasChanged();
+
+        try
+        {
+            var response = await Http.GetAsync($"file/downloads/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var stream = await response.Content.ReadAsStreamAsync();
+
+                using var memoryStream = new MemoryStream();
+                await stream.CopyToAsync(memoryStream);
+                var bytes = memoryStream.ToArray();
+
+                var base64 = Convert.ToBase64String(bytes);
+                var fileName = GetFileNameFromHeaders(response) ?? "download.pdf";
+
+                await JS.InvokeVoidAsync("downloadFile", fileName, base64);
+            }
+            else
+            {
+                // handle 404 etc if needed
+            }
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private static string? GetFileNameFromHeaders(HttpResponseMessage response)
+    {
+        var contentDisposition = response.Content.Headers.ContentDisposition;
+
+        if (contentDisposition == null)
+            return null;
+
+        // Prefer filename* (RFC 5987)
+        if (!string.IsNullOrEmpty(contentDisposition.FileNameStar))
+        {
+            return Uri.UnescapeDataString(contentDisposition.FileNameStar);
+        }
+
+        // Fallback to filename
+        if (!string.IsNullOrEmpty(contentDisposition.FileName))
+        {
+            return contentDisposition.FileName.Trim('"');
+        }
+
+        return null;
+    }
+
+    private void ApplyFilteringSortingAndPaging()
+    {
+        var query = _allItems.AsQueryable();
+
+        // Search filter
+        if (!string.IsNullOrWhiteSpace(_searchTerm))
+        {
+            query = query.Where(download =>
+                (download.Title != null && download.Title.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase)) ||
+                download.BRnum.ToString().Contains(_searchTerm));
+        }
+
+        switch (_showDownloaded)
+        {
+            case ShowDownloaded.DOWNLOADED:
+                query = query.Where(x => x.IsDownloaded);
+                break;
+            case ShowDownloaded.NOTDOWNLOADED:
+                query = query.Where(x => !x.IsDownloaded);
+                break;
+            case ShowDownloaded.BOTH:
+                break;
+            default:
+                break;
+        }
+
+        // Sorting
+        query = _sortColumn switch
+        {
+            nameof(PdfDownloadResponse.BRnum) => _sortAscending ? query.OrderBy(x => x.BRnum) : query.OrderByDescending(x => x.BRnum),
+            nameof(PdfDownloadResponse.Title) => _sortAscending ? query.OrderBy(x => x.Title) : query.OrderByDescending(x => x.Title),
+            nameof(PdfDownloadResponse.IsDownloaded) => _sortAscending ? query.OrderBy(x => x.IsDownloaded) : query.OrderByDescending(x => x.IsDownloaded),
+            nameof(PdfDownloadResponse.ErrorMessage) => _sortAscending ? query.OrderBy(x => x.ErrorMessage) : query.OrderByDescending(x => x.ErrorMessage),
+            _ => query
+        };
+
+        _filteredCount = query.Count();
+        _totalPages = (int)Math.Ceiling(_filteredCount / (double)_pageSize);
+        if (_currentPage > _totalPages) _currentPage = 1;
+
+        _pagedItems = query
+            .Skip((_currentPage - 1) * _pageSize)
+            .Take(_pageSize)
+            .ToList();
+    }
+
+    private void SortBy(string column)
+    {
+        if (_sortColumn == column)
+            _sortAscending = !_sortAscending;
+        else
+        {
+            _sortColumn = column;
+            _sortAscending = true;
+        }
+
+        ApplyFilteringSortingAndPaging();
+    }
+
+    private MarkupString SortIndicator(string column) =>
+        _sortColumn == column ? (_sortAscending ? (MarkupString)"&#9650;" : (MarkupString)"&#9660;") : (MarkupString)"";
+
+    private void ToggleHideDownloaded()
+    {
+        if(_showDownloaded == ShowDownloaded.BOTH){
+            _showDownloaded = ShowDownloaded.DOWNLOADED;
+        }
+        else{
+            _showDownloaded++;
+        }
+        ApplyFilteringSortingAndPaging();
+    }
+
+    private void SelectAllPagedItems()
+    {
+        _masterSelect = !_masterSelect;
+        foreach (var item in _pagedItems)
+        {
+            item.IsSelected = _masterSelect;
+            if(_masterSelect){
+                _selectedItems.Add(item.Id);
+            }
+            else{
+                _selectedItems.Remove(item.Id);
+            }
+        }
+        StateHasChanged();
+    }
+
+    private void UpdateSelectedItems(PdfDownloadResponse item)
+    {
+        if (item.IsSelected) {
+            _selectedItems.Add(item.Id);
+        }
+        else
+        {
+            _selectedItems.Remove(item.Id);
+        }
+    }
+
+    private async Task StartDownloadAsync()
+    {
+        _isLoading = true;
+        StateHasChanged();
+
+        if (!_selectedItems.Any()) return;
+
+        var content = JsonContent.Create(_selectedItems.ToList());
+        var response = await Http.PostAsync("file/downloads", content);
+
+        if (response.IsSuccessStatusCode)
+        {
+            // optionally refresh data
+            await LoadData();
+            _selectedItems.Clear();
+        }
+
+        _isLoading = false;
+        StateHasChanged();
+    }
+
+    private void NextPage()
+    {
+        if (_currentPage < _totalPages)
+        {
+            _currentPage++;
+            ApplyFilteringSortingAndPaging();
+        }
+    }
+
+    private void PreviousPage()
+    {
+        if (_currentPage > 1)
+        {
+            _currentPage--;
+            ApplyFilteringSortingAndPaging();
+        }
+    }
+
+    private string SearchTerm
+    {
+        get => _searchTerm;
+        set
+        {
+            if (_searchTerm != value)
+            {
+                _searchTerm = value;
+                _currentPage = 1;
+                ApplyFilteringSortingAndPaging();
+            }
+        }
+    }
+
+    private string GetRowClass(PdfDownloadResponse download)
+    {
+        if (download.IsDownloaded)
+            return "row-success";
+
+        if (!download.IsDownloaded && string.IsNullOrWhiteSpace(download.ErrorMessage))
+            return "row-warning";
+
+        return "row-error";
+    }
+}

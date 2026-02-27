@@ -1,0 +1,6 @@
+@pdf_downloader.Api_HostAddress = http://localhost:5162
+
+GET {{pdf_downloader.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

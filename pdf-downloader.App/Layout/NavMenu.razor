@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using PdfDownloader.Domain.Enums
+@using pdf_downloader.App.Pages
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">PDF Downloader</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+    <nav class="nav flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+        <AuthorizeView Roles="@Role.ADMIN.ToRoleString()">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="file-upload">
+                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Upload
+                </NavLink>
+            </div>
+        </AuthorizeView>
+        <AuthorizeView Roles="@Role.USER.ToRoleString()">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="downloads">
+                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Downloads
+                </NavLink>
+            </div>
+        </AuthorizeView>
+        <div class="nav-item px-3">
+            <Logout></Logout>
+        </div>
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
