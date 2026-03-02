@@ -14,6 +14,8 @@ public class PdfsDownloader : IDownloader
         _client = client;
     }
 
+    // Long method, mainly du to the lambda inside it - See my Feedback file
+    // Using a `StringBuilder` for constructing the `ErrorMessage` would be ideal
     public async Task<List<PdfDownload>> DoDownloads(string directoryDestination, List<PdfDownload> notDownloadedPdfs)
     {
         var tasks = notDownloadedPdfs.Select(async notDownloaded =>
