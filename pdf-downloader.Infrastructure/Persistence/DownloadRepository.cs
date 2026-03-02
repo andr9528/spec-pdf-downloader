@@ -38,6 +38,7 @@ public class DownloadRepository : IDownloadRepository
         return _context.PdfDownloads.ToList();
     }
 
+    /// <inheritdoc />
     public byte[] GetFile(string path)
     {
         if (!System.IO.File.Exists(path))

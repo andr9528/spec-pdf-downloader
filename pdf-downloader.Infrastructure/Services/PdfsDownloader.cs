@@ -25,7 +25,6 @@ public class PdfsDownloader : IDownloader
 
             try
             {
-
                 isSuccess = await DownloadAsync(notDownloaded.Url, targetPathpdf);          
             }
             catch (DownloadFailedException exception)
@@ -37,6 +36,10 @@ public class PdfsDownloader : IDownloader
                 ErrorMessage += $"First Attempt: {exception.Message}";
             }
 
+            // Could skip this if, if the backup url is empty.
+            // i.e `... && !string.IsNullOrEmpty(notDownloaded.BackupUrl)`.
+            // Code does the same at the moment, but would improve readability,
+            // and eliminate a thrown `DownloadFailedException`.
             if (!isSuccess)
             {
                 try
@@ -51,7 +54,7 @@ public class PdfsDownloader : IDownloader
                 {
                     ErrorMessage += $"{Environment.NewLine}Second Attempt: {exception.Message}";
                 }
-                }
+            }
 
             if (isSuccess || secondIsSuccess)
             {
@@ -92,6 +95,7 @@ public class PdfsDownloader : IDownloader
 
             var bytes = await response.Content.ReadAsByteArrayAsync();
 
+            // Can end up throwing an `IndexOutOfRangeException` if response content is less than 2 bytes.
             if (bytes[0] != 0x25 || bytes[1] != 0x50) // %P
                 throw new DownloadFailedException($"Invalid PDF header");
 

@@ -8,6 +8,7 @@ using PdfDownloader.Infrastructure.Services.Interfaces;
 
 namespace pdf_downloader.Infrastructure.Services
 {
+    // Why is this here? Removing it results in no errors.
     using PdfDownloader.Infrastructure.Services.Interfaces;
 
     public class FileService : IFileService
@@ -63,6 +64,7 @@ namespace pdf_downloader.Infrastructure.Services
 
         public async Task<List<PdfDownload>> DownloadAndSavePdfsAsync(List<PdfDownload> pdfs, string folderName)
         {
+            // 'pdfs' are never null according to nullable reference type. Should likely be of type `List<PdfDownload>?`.
             if (pdfs == null || !pdfs.Any()) return new List<PdfDownload>();
 
             string dir = await EnsureDirectoryAsync(folderName);
