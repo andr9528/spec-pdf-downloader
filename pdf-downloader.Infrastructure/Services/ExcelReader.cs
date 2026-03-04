@@ -30,10 +30,13 @@ public class ExcelReader : IReader{
 
         var table = dataSet.Tables[0];
 
+        // How many rows does this contain?
+        // Are empty rows ignored?
         foreach (DataRow row in table.Rows)
         {
             result.Add(new PdfDownload
             {
+                // See Feedback document ## String Vs. Number Row Reference
                 Id = Guid.NewGuid(),
                 BRnum = row["BRnum"]?.ToString() ?? "",
                 Url = row["Pdf_URL"]?.ToString() ?? "",

@@ -42,6 +42,9 @@ namespace pdf_downloader.Infrastructure.Services
             return pdfs;
         }
 
+        // I'd expect this method to return void, following the name.
+        // Also nothing indicates that the folder is placed under storage.
+        // Maybe name it `GetAndEnsureStorageDirectoryAsync(...)`
         public async Task<string> EnsureDirectoryAsync(string folderName)
         {
             string baseDir = Directory.GetCurrentDirectory();
@@ -65,6 +68,7 @@ namespace pdf_downloader.Infrastructure.Services
         public async Task<List<PdfDownload>> DownloadAndSavePdfsAsync(List<PdfDownload> pdfs, string folderName)
         {
             // 'pdfs' are never null according to nullable reference type. Should likely be of type `List<PdfDownload>?`.
+            // Call sites are never null - not even in tests.
             if (pdfs == null || !pdfs.Any()) return new List<PdfDownload>();
 
             string dir = await EnsureDirectoryAsync(folderName);

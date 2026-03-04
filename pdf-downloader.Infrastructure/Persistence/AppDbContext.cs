@@ -14,6 +14,8 @@ public class AppDbContext : DbContext
 
     public DbSet<PdfDownload> PdfDownloads => Set<PdfDownload>();
 
+    // Is configuring multiple entities. Not a big issue with this amount of entities.
+    // If more entities gets added, then consider extracting to different classes.
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<User>()

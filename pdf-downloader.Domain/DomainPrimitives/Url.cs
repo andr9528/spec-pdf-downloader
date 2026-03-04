@@ -1,6 +1,7 @@
 using System.Data;
 using PdfDownloader.Domain.Exceptions;
 
+// Extending `Uri` might have been a good choice, if this should be kept.
 public class Url
 {
     public string Value { get; set; } = default!;

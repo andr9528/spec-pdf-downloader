@@ -7,5 +7,6 @@ public enum Role{
 
 public static class RoleExtensions
 {
+    // Razor is able to use `Enum.ToString()`.
     public static string ToRoleString(this Role role) => role.ToString();
 }

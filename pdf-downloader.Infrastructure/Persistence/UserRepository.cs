@@ -22,6 +22,7 @@ public class UserRepository : IUserRepository
 
     public async Task AddAsync(User user)
     {
+        // Using `Nameof` would be better, as it keep the same meaningful value ones obfuscation is added.
         user.Role = Domain.Enums.Role.USER.ToString();
 
         //TODO Create the first admin in a better way

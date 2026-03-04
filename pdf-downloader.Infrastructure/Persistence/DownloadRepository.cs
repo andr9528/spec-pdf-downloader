@@ -51,6 +51,7 @@ public class DownloadRepository : IDownloadRepository
 
     public PdfDownload? GetDownload(Guid id)
     {
+        // Move query to `.FirstOrDefault()`. It has the same outcome.
         return _context.PdfDownloads
             .Where(download => download.Id == id)
             .FirstOrDefault();

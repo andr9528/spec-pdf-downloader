@@ -83,3 +83,10 @@ if (app.Environment.IsDevelopment())
 
 
 app.Run();
+
+/*
+
+Configures a number of different things, technically in one method.
+Splitting it into muliple smaller named methods would help readability.
+
+*/
