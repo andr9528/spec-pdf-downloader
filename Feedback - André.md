@@ -1,5 +1,9 @@
 # Feedback
 
+## Validation
+
+Your `/auth/*` controller endpoints ask for an `email`, but doesn't check that the supplied value contains a `@`.
+
 ## Comments Vs. Methods
 
 You have a number of comments, which could easily have been method names. One such is like the below.
@@ -39,6 +43,15 @@ Seen in `pdf-downloader.Infrastructure\Services\PdfsDownloader.cs`
 Your enties that are tracked by Entity Framework Core - i.e `PdfDownload` and `User` - can have their `.Id` changed during the execution.
 
 If the Id is accidentally changed after loading from the database, and then `.SaveChanges(...)` is called, then as far as i know, Entity Framework Core will thrown an exception.
+
+## String Vs. Number Row Reference
+
+Following feedback is mainly aimed at `pdf-downloader.Infrastructure\Services\ExcelReader.cs`.
+
+- String usage for referencing columns. If the header of a column is renamed, then it breaks. They are Magic string.
+- Computers are better at working with numbers than strings, so there are some performance loss here.
+- Using numbers can still break, but requires more cells to be moved before breaking.
+- Moving the name of the collumn used or the number to an program argument, so it can be configured from the outside would solve issues relateds to typos or columns being renamed. 
 
 ## Linq
 
